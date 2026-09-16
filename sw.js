@@ -1,6 +1,5 @@
-// ★ファイルを更新して再アップロードしたら、この数字を v3, v4... と増やしてください。
-// (増やさないとブラウザが更新を検知しないことがあります)
-var CACHE_NAME = "kids-music-app-v2";
+// v3: 206(部分リクエスト)応答でも曲を確実にキャッシュできるよう修正
+var CACHE_NAME = "kids-music-app-v3";
 
 var APP_SHELL = [
   "./",
@@ -37,12 +36,26 @@ function isSongRequest(url) {
   return url.indexOf("/songs/") !== -1;
 }
 
+// 曲ファイル全体を、Rangeヘッダ無しのリクエストとして裏側でキャッシュする
+function warmSongCache(url) {
+  var fullReq = new Request(url, { method: "GET" }); // Rangeなしの素のGET
+  caches.match(fullReq).then(function (already) {
+    if (already) { return; } // 既にフルでキャッシュ済みなら何もしない
+    fetch(fullReq).then(function (fullRes) {
+      if (fullRes && fullRes.status === 200) {
+        caches.open(CACHE_NAME).then(function (cache) {
+          cache.put(fullReq, fullRes);
+        });
+      }
+    }).catch(function () {});
+  });
+}
+
 self.addEventListener("fetch", function (event) {
   var req = event.request;
   var url = req.url;
 
   if (isSongRequest(url)) {
-    // 曲(mp3)は変わらない前提なのでキャッシュ優先(オフライン再生の要)
     event.respondWith(
       caches.match(req).then(function (cached) {
         if (cached) { return cached; }
@@ -50,6 +63,9 @@ self.addEventListener("fetch", function (event) {
           if (res && res.status === 200) {
             var clone = res.clone();
             caches.open(CACHE_NAME).then(function (cache) { cache.put(req, clone); });
+          } else if (res && res.status === 206) {
+            // 部分応答は保存せず、フル取得を裏で走らせて次回以降に備える
+            warmSongCache(url);
           }
           return res;
         });
@@ -59,7 +75,6 @@ self.addEventListener("fetch", function (event) {
   }
 
   // アプリ本体(HTML/CSS/JS/アイコン等)はネットワーク優先
-  // → 修正したらすぐ反映される。オフライン時のみキャッシュにフォールバック。
   event.respondWith(
     fetch(req).then(function (res) {
       if (res && res.status === 200) {
