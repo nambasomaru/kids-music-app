@@ -6,22 +6,22 @@
    title はボタンに表示される名前です（空文字でも可）。
    ========================================================= */
 var SONGS = [
-  { title: "どんな色が好き",  file: "songs/song01.mp3" },
+  { title: "どんな色がすき",  file: "songs/song01.mp3" },
   { title: "ぼくらのロコモーション",  file: "songs/song02.mp3" },
   { title: "ボロボロロケット",  file: "songs/song03.mp3" },
   { title: "わ～お!",  file: "songs/song04.mp3" },
   { title: "青空しんこきゅう",  file: "songs/song05.mp3" },
   { title: "クラッパラ!",  file: "songs/song06.mp3" },
-  { title: "夢をかなえてドラえもん",  file: "songs/song07.mp3" },
-  { title: "崖の上のポニョ",  file: "songs/song08.mp3" },
+  { title: "ドラえもん",  file: "songs/song07.mp3" },
+  { title: "ポニョ",  file: "songs/song08.mp3" },
   { title: "にんげんっていいな",  file: "songs/song09.mp3" },
-  { title: "アンパンマンのマーチ", file: "songs/song10.mp3" },
+  { title: "アンパンマン", file: "songs/song10.mp3" },
   { title: "君をのせて", file: "songs/song11.mp3" },
   { title: "この空", file: "songs/song12.mp3" },
   { title: "おどるポンポコリン", file: "songs/song13.mp3" },
   { title: "サザエさん", file: "songs/song14.mp3" },
-  { title: "きかんしゃトーマスのテーマ", file: "songs/song15.mp3" },
-  { title: "さんぽ", file: "songs/song16.mp3" },
+  { title: "きかんしゃトーマス", file: "songs/song15.mp3" },
+  { title: "さんぽ.", file: "songs/song16.mp3" },
   { title: "勇気100%", file: "songs/song17.mp3" },
   { title: "ジャングルポケット", file: "songs/song18.mp3" },
   { title: "ミッキーマウス・マーチ", file: "songs/song19.mp3" },
@@ -136,6 +136,18 @@ function buildGrid() {
   stopBtn.addEventListener("click", onStopPressed);
   grid.appendChild(stopBtn);
 }
+
+// スマホのアドレスバーなどで実際に見える高さが変わっても
+// 画面いっぱいに24個のボタンが収まるように、実際の高さを都度測ってCSSに渡す
+function setViewportHeightVar() {
+  var vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", vh + "px");
+}
+setViewportHeightVar();
+window.addEventListener("resize", setViewportHeightVar);
+window.addEventListener("orientationchange", function () {
+  setTimeout(setViewportHeightVar, 300);
+});
 
 document.getElementById("off-screen").addEventListener("click", turnOn);
 

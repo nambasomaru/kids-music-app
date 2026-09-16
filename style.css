@@ -23,7 +23,8 @@ html, body {
   grid-template-rows: repeat(4, 1fr);
   gap: 1.6vmin;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* 対応していない古いブラウザ向けの保険 */
+  height: calc(var(--vh, 1vh) * 100);
   padding: 1.6vmin;
 }
 
@@ -100,7 +101,8 @@ html, body {
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* 対応していない古いブラウザ向けの保険 */
+  height: calc(var(--vh, 1vh) * 100);
   background: #05050c;
   display: none;
   align-items: center;
