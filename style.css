@@ -1,0 +1,121 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1c1c33;
+  font-family: "Segoe UI Rounded", "Arial Rounded MT Bold", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  touch-action: manipulation;
+}
+
+#grid-screen {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1.6vmin;
+  width: 100vw;
+  height: 100vh;
+  padding: 1.6vmin;
+}
+
+.btn {
+  border: none;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.15;
+  padding: 4px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.28), inset 0 0 0 2px rgba(255,255,255,0.18);
+  transform: translateY(0);
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+}
+
+.btn .num {
+  font-size: clamp(11px, 2.6vmin, 20px);
+  opacity: 0.75;
+  font-weight: 700;
+}
+
+.btn .label {
+  font-size: clamp(10px, 2.1vmin, 16px);
+  padding: 0 4px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0,0,0,0.28), inset 0 0 0 2px rgba(255,255,255,0.18);
+}
+
+.btn.playing {
+  box-shadow: 0 4px 0 rgba(0,0,0,0.28), inset 0 0 0 4px #fff, 0 0 0 4px rgba(255,255,255,0.35);
+  animation: pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.18); }
+}
+
+/* candy color rotation for the 23 play buttons */
+.c0 { background: #FF6B5B; }
+.c1 { background: #FFC93C; color: #3a2a00; }
+.c2 { background: #3DDC97; color: #063a26; }
+.c3 { background: #4DA8FF; }
+.c4 { background: #A66DFF; }
+.c5 { background: #FF9F45; color: #3a1f00; }
+
+.stop-btn {
+  background: #E63946;
+  box-shadow: 0 4px 0 #8f1c26, inset 0 0 0 2px rgba(255,255,255,0.25);
+}
+.stop-btn:active {
+  box-shadow: 0 0 0 #8f1c26, inset 0 0 0 2px rgba(255,255,255,0.25);
+}
+
+.stop-icon {
+  width: 34%;
+  height: 34%;
+  background: #fff;
+  border-radius: 4px;
+}
+
+#off-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #05050c;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#off-dot {
+  width: 3.5vmin;
+  height: 3.5vmin;
+  border-radius: 50%;
+  background: #2a2a44;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.15); }
+}
